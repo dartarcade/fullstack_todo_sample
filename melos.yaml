@@ -1,0 +1,4 @@
+name: fullstack_todo
+
+packages:
+  - packages/**
