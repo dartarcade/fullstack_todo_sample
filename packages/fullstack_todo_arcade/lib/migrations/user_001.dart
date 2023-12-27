@@ -1,10 +1,14 @@
-import 'package:fullstack_todo_arcade/core/external_dependencies.dart';
 import 'package:fullstack_todo_arcade/shared/dtos/user.dart';
 import 'package:goose/goose.dart';
+import 'package:injectable/injectable.dart';
+import 'package:postgres/postgres.dart';
 
 /// Migration to create a [User] table
+@singleton
 class UserMigration001 extends Migration {
-  const UserMigration001() : super('user001', description: 'Create user table');
+  const UserMigration001(this.db) : super('user001', description: 'Create user table');
+  
+  final Connection db;
 
   @override
   Future<void> up() async {

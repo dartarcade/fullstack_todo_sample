@@ -17,8 +17,8 @@ Future<void> main() async {
   ''');
 
   final goose = Goose(
-    migrations: const [
-      UserMigration001(),
+    migrations: [
+      getIt<UserMigration001>(),
     ],
     store: (index) {
       return db.execute(
