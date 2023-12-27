@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:fullstack_todo_arcade/core/init.dart';
+import 'package:fullstack_todo_arcade/migrations/todo_001.dart';
+import 'package:fullstack_todo_arcade/migrations/todo_002.dart';
 import 'package:fullstack_todo_arcade/migrations/user_001.dart';
 import 'package:goose/goose.dart';
 import 'package:postgres/postgres.dart';
@@ -19,6 +21,8 @@ Future<void> main() async {
   final goose = Goose(
     migrations: [
       getIt<UserMigration001>(),
+      getIt<TodoMigration001>(),
+      getIt<TodoMigration002>(),
     ],
     store: (index) {
       return db.execute(
