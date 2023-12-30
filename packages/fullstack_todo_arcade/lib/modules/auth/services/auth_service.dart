@@ -1,7 +1,7 @@
 import 'package:arcade/arcade.dart';
 import 'package:fullstack_todo_arcade/modules/auth/dtos/login_dto.dart';
 import 'package:fullstack_todo_arcade/modules/auth/dtos/register_dto.dart';
-import 'package:fullstack_todo_arcade/repositories/user_repository.dart';
+import 'package:fullstack_todo_arcade/modules/auth/repositories/user_repository.dart';
 import 'package:fullstack_todo_arcade/shared/dtos/tokens.dart';
 import 'package:fullstack_todo_arcade/shared/dtos/user.dart';
 import 'package:fullstack_todo_arcade/shared/services/hash_service.dart';

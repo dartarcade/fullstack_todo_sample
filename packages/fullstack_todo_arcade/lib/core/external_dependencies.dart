@@ -1,5 +1,4 @@
 import 'package:fullstack_todo_arcade/core/env.dart';
-import 'package:fullstack_todo_arcade/core/init.dart';
 import 'package:injectable/injectable.dart';
 import 'package:postgres/postgres.dart';
 

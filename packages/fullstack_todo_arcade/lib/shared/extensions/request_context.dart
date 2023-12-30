@@ -7,7 +7,7 @@ extension RequestContextX on RequestContext {
   ) async {
     final json = switch (await jsonMap()) {
       BodyParseSuccess(value: final value) => value,
-      BodyParseFailure(error: final error) => throw const BadRequestException(
+      BodyParseFailure() => throw const BadRequestException(
           message: "Invalid JSON",
         ),
     };

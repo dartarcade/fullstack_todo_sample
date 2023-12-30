@@ -32,7 +32,8 @@ typedef $CreateTodo = Pick<
     })>;
 
 SchemaValidationResult<CreateTodo> createTodoValidator(
-    Map<String, dynamic> json) {
+  Map<String, dynamic> json,
+) {
   final schema = l.schema({
     'title': l.string().required(),
     'description': l.string().required(),

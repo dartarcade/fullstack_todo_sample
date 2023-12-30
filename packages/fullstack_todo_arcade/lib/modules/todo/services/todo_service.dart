@@ -1,5 +1,5 @@
 import 'package:fullstack_todo_arcade/modules/todo/dtos/todo.dart';
-import 'package:fullstack_todo_arcade/repositories/todo_repository.dart';
+import 'package:fullstack_todo_arcade/modules/todo/repositories/todo_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
@@ -17,5 +17,9 @@ class TodoService {
       userId: userId,
       dto: dto,
     );
+  }
+
+  Future<Todo> toggleDone({required int id, required int userId}) {
+    return _todoRepository.toggleDone(id: id, userId: userId);
   }
 }
