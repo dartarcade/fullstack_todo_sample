@@ -22,4 +22,8 @@ class TodoService {
   Future<Todo> toggleDone({required int id, required int userId}) {
     return _todoRepository.toggleDone(id: id, userId: userId);
   }
+
+  Future<Todo> deleteTodo({required int id, required int userId}) {
+    return _todoRepository.deleteTodo(id: id, userId: userId);
+  }
 }

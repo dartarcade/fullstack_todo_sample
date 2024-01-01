@@ -15,10 +15,15 @@ class TodoController {
       before: [authHook.call],
       defineRoutes: () {
         Route.get('/').handle((context) => getTodos(context as IsAuthContext));
+
         Route.post('/')
             .handle((context) => createTodo(context as IsAuthContext));
+
         Route.patch('/:id')
             .handle((context) => toggleDone(context as IsAuthContext));
+
+        Route.delete('/:id')
+            .handle((context) => deleteTodo(context as IsAuthContext));
       },
     );
   }
@@ -54,6 +59,26 @@ class TodoController {
     return switch (idResult) {
       SingleValidationSuccess(data: final data) => _todoService
           .toggleDone(id: data!, userId: context.payload.id)
+          .then((todo) => todo.toJson()),
+      SingleValidationError(errors: final errors) => throw BadRequestException(
+          message: 'Invalid id',
+          errors: {'id': errors},
+        ),
+    };
+  }
+
+  Future<Map<String, dynamic>> deleteTodo(
+    covariant IsAuthContext context,
+  ) async {
+    final idResult = l.int()
+        .required()
+        .validateValue(int.tryParse(context.pathParameters['id'] ?? ''));
+    return switch (idResult) {
+      SingleValidationSuccess(data: final data) => _todoService
+          .deleteTodo(
+            id: data!,
+            userId: context.payload.id,
+          )
           .then((todo) => todo.toJson()),
       SingleValidationError(errors: final errors) => throw BadRequestException(
           message: 'Invalid id',

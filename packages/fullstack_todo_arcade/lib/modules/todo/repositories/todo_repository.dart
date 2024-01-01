@@ -62,4 +62,23 @@ class TodoRepository {
     );
     return TodoFromJson(result.first.toColumnMap());
   }
+
+  Future<Todo> deleteTodo({required int id, required int userId}) {
+    final sql = Sql.named('''
+      delete from todo where id = @id and user_id = @userId
+      returning *;
+    ''');
+    return _db.execute(
+      sql,
+      parameters: {
+        'id': TypedValue(Type.integer, id),
+        'userId': TypedValue(Type.integer, userId),
+      },
+    ).then((result) {
+      if (result.isEmpty) {
+        throw NotFoundException(message: 'Todo with id $id does not exist');
+      }
+      return TodoFromJson(result.first.toColumnMap());
+    });
+  }
 }
