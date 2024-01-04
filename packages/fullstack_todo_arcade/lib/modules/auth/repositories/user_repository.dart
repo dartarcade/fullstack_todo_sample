@@ -1,4 +1,4 @@
-import 'package:fullstack_todo_arcade/shared/dtos/user.dart';
+import 'package:fullstack_todo_shared/models/user.dart';
 import 'package:injectable/injectable.dart';
 import 'package:postgres/postgres.dart';
 
@@ -23,8 +23,9 @@ class UserRepository {
       finalSql = '$sql email = @email';
       parameters = {'email': TypedValue(Type.text, email)};
     }
-    
-    final result = await db.execute(Sql.named(finalSql), parameters: parameters);
+
+    final result =
+        await db.execute(Sql.named(finalSql), parameters: parameters);
     if (result.isEmpty) return null;
     return UserFromJson(result.first.toColumnMap());
   }

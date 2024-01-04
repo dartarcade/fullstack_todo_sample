@@ -40,3 +40,23 @@ SchemaValidationResult<CreateTodo> createTodoValidator(
   });
   return schema.validateSchema(json, fromJson: CreateTodoFromJson);
 }
+
+@_superTypesTodo
+typedef $UpdateTodo = Pick<
+    $Todo,
+    ({
+      Partial title,
+      Partial description,
+      Partial isDone,
+    })>;
+
+SchemaValidationResult<UpdateTodo> updateTodoValidator(
+  Map<String, dynamic> json,
+) {
+  final schema = l.schema({
+    'title': l.string(),
+    'description': l.string(),
+    'isDone': l.bool(),
+  });
+  return schema.validateSchema(json, fromJson: UpdateTodoFromJson);
+}

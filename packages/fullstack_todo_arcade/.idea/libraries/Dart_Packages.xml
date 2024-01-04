@@ -275,6 +275,13 @@
             </list>
           </value>
         </entry>
+        <entry key="fullstack_todo_shared">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../fullstack_todo_shared/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="get_it">
           <value>
             <list>
@@ -765,6 +772,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/web_socket_channel-2.4.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/webkit_inspection_protocol-1.2.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/yaml-3.1.2/lib" />
+      <root url="file://$PROJECT_DIR$/../fullstack_todo_shared/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,9 +1,9 @@
 import 'package:arcade/arcade.dart';
-import 'package:fullstack_todo_arcade/modules/todo/dtos/todo.dart';
 import 'package:fullstack_todo_arcade/modules/todo/services/todo_service.dart';
 import 'package:fullstack_todo_arcade/shared/contexts/is_auth_context.dart';
 import 'package:fullstack_todo_arcade/shared/extensions/request_context.dart';
 import 'package:fullstack_todo_arcade/shared/hooks/auth_hook.dart';
+import 'package:fullstack_todo_shared/dtos/todos/todo.dart';
 import 'package:injectable/injectable.dart';
 import 'package:luthor/luthor.dart';
 
@@ -20,7 +20,7 @@ class TodoController {
             .handle((context) => createTodo(context as IsAuthContext));
 
         Route.patch('/:id')
-            .handle((context) => toggleDone(context as IsAuthContext));
+            .handle((context) => updateTodo(context as IsAuthContext));
 
         Route.delete('/:id')
             .handle((context) => deleteTodo(context as IsAuthContext));
@@ -50,15 +50,16 @@ class TodoController {
         .then((todo) => todo.toJson());
   }
 
-  Future<Map<String, dynamic>> toggleDone(
+  Future<Map<String, dynamic>> updateTodo(
     covariant IsAuthContext context,
   ) async {
     final idResult = l.int()
         .required()
         .validateValue(int.tryParse(context.pathParameters['id'] ?? ''));
+    final dto = await context.validateWithLuthor(updateTodoValidator);
     return switch (idResult) {
-      SingleValidationSuccess(data: final data) => _todoService
-          .toggleDone(id: data!, userId: context.payload.id)
+      SingleValidationSuccess(data: final id) => _todoService
+          .toggleDone(id: id!, dto: dto, userId: context.payload.id)
           .then((todo) => todo.toJson()),
       SingleValidationError(errors: final errors) => throw BadRequestException(
           message: 'Invalid id',

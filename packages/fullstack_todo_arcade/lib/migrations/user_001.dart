@@ -1,4 +1,3 @@
-import 'package:fullstack_todo_arcade/shared/dtos/user.dart';
 import 'package:goose/goose.dart';
 import 'package:injectable/injectable.dart';
 import 'package:postgres/postgres.dart';

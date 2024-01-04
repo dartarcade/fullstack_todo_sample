@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/packages/fullstack_demo_flutter/melos_fullstack_demo_flutter.iml" filepath="$PROJECT_DIR$/packages/fullstack_demo_flutter/melos_fullstack_demo_flutter.iml" />
       <module fileurl="file://$PROJECT_DIR$/packages/fullstack_todo_arcade/melos_fullstack_todo_arcade.iml" filepath="$PROJECT_DIR$/packages/fullstack_todo_arcade/melos_fullstack_todo_arcade.iml" />
+      <module fileurl="file://$PROJECT_DIR$/packages/fullstack_todo_shared/melos_fullstack_todo_shared.iml" filepath="$PROJECT_DIR$/packages/fullstack_todo_shared/melos_fullstack_todo_shared.iml" />
       <module fileurl="file://$PROJECT_DIR$/melos_fullstack_todo.iml" filepath="$PROJECT_DIR$/melos_fullstack_todo.iml" />
     </modules>
   </component>

@@ -1,11 +1,11 @@
 import 'package:arcade/arcade.dart';
-import 'package:fullstack_todo_arcade/modules/auth/dtos/login_dto.dart';
-import 'package:fullstack_todo_arcade/modules/auth/dtos/register_dto.dart';
 import 'package:fullstack_todo_arcade/modules/auth/repositories/user_repository.dart';
-import 'package:fullstack_todo_arcade/shared/dtos/tokens.dart';
-import 'package:fullstack_todo_arcade/shared/dtos/user.dart';
 import 'package:fullstack_todo_arcade/shared/services/hash_service.dart';
 import 'package:fullstack_todo_arcade/shared/services/jwt_service.dart';
+import 'package:fullstack_todo_shared/dtos/auth/login_dto.dart';
+import 'package:fullstack_todo_shared/dtos/auth/register_dto.dart';
+import 'package:fullstack_todo_shared/models/tokens.dart';
+import 'package:fullstack_todo_shared/models/user.dart';
 import 'package:injectable/injectable.dart';
 
 @singleton
@@ -21,9 +21,9 @@ class AuthService {
     if (existingUser != null) {
       throw const ConflictException(message: 'User already exists');
     }
-    
+
     final hashedPassword = await _hashService.hash(dto.password);
-    
+
     final user = await _userRepository.create(
       (
         name: dto.name,
@@ -38,18 +38,24 @@ class AuthService {
 
     return UserWithTokensFromJson({...user.toJson(), ...tokens.toJson()});
   }
-  
+
   Future<UserWithTokens> login(LoginDto dto) async {
     final user = await _userRepository.findBy(email: dto.email);
     if (user == null) {
       throw const NotFoundException(message: 'User not found');
     }
-    
+
     final Tokens tokens = (
       accessToken: _jwtService.generateAccessToken((id: user.id)),
       refreshToken: _jwtService.generateRefreshToken((id: user.id)),
     );
 
     return UserWithTokensFromJson({...user.toJson(), ...tokens.toJson()});
+  }
+
+  AccessToken refresh({required String token}) {
+    final payload = _jwtService.verifyRefreshToken(token);
+    final accessToken = _jwtService.generateAccessToken((id: payload.id));
+    return AccessTokenFromJson({'access_token': accessToken});
   }
 }

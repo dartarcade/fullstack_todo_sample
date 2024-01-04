@@ -1,5 +1,5 @@
 import 'package:arcade/arcade.dart';
-import 'package:fullstack_todo_arcade/modules/todo/dtos/todo.dart';
+import 'package:fullstack_todo_shared/dtos/todos/todo.dart';
 import 'package:injectable/injectable.dart';
 import 'package:postgres/postgres.dart';
 
@@ -37,29 +37,55 @@ class TodoRepository {
     return TodoFromJson(result.first.toColumnMap());
   }
 
-  Future<Todo> toggleDone({required int id, required int userId}) async {
+  Future<Todo> updateTodo({
+    required int id,
+    required UpdateTodo dto,
+    required int userId,
+  }) async {
+    const sql = '''
+      update todo set 
+    ''';
+    final parameters = <String, TypedValue>{
+      'id': TypedValue(Type.integer, id),
+      'userId': TypedValue(Type.integer, userId),
+    };
+    String finalSql = sql;
+
+    if (dto.title != null) {
+      finalSql += 'title = @title, ';
+      parameters['title'] = TypedValue(Type.text, dto.title);
+    }
+
+    if (dto.description != null) {
+      finalSql += 'description = @description, ';
+      parameters['description'] = TypedValue(Type.text, dto.description);
+    }
+
+    if (dto.isDone != null) {
+      finalSql += 'is_done = @isDone, ';
+      parameters['isDone'] = TypedValue(Type.boolean, dto.isDone);
+    }
+
+    if (finalSql.endsWith(', ')) {
+      finalSql = finalSql.substring(0, finalSql.length - 2);
+    }
+
+    finalSql += ' where id = @id and user_id = @userId returning *;';
+
     final existsResult = await _db.execute(
-      Sql.named('select * from todo where id = @id and user_id = @userId;'),
-      parameters: {
-        'id': TypedValue(Type.integer, id),
-        'userId': TypedValue(Type.integer, userId),
-      },
+      Sql.named(finalSql),
+      parameters: parameters,
     );
-    
+
     if (existsResult.isEmpty) {
       throw NotFoundException(message: 'Todo with id $id does not exist');
     }
 
-    final sql = Sql.named('''
-      update todo set is_done = not is_done, updated_at = now() where id = @id
-      returning *;
-    ''');
     final result = await _db.execute(
-      sql,
-      parameters: {
-        'id': TypedValue(Type.integer, id),
-      },
+      Sql.named(finalSql),
+      parameters: parameters,
     );
+    
     return TodoFromJson(result.first.toColumnMap());
   }
 
